@@ -49,3 +49,6 @@ sudo sudo service cron start
 注意事项
 需要长期保存的数据，请一定存放在用户家目录，重要数据定期备份
 通过 apt install 安装的应用重启后会丢失（需要在构建镜像时安装）
+贴一张clawcloud配置图，仅供参考
+<img width="997" height="2132" alt="长截图_20260129_172323" src="https://github.com/user-attachments/assets/b134fcb6-c680-4c37-93ad-294181b49b32" />
+
