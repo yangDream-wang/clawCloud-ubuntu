@@ -10,46 +10,79 @@ ENV TZ=Asia/Shanghai \
 COPY entrypoint.sh /entrypoint.sh
 COPY reboot.sh /usr/local/sbin/reboot
 
-RUN export DEBIAN_FRONTEND=noninteractive; \
-    apt-get update; \
-    apt-get install -y tzdata openssh-server sudo curl ca-certificates wget vim net-tools supervisor cron unzip iputils-ping telnet git iproute2 --no-install-recommends; \
-    apt-get clean; \
-    rm -rf /var/lib/apt/lists/*; \
-    mkdir /var/run/sshd; \
-    chmod +x /entrypoint.sh; \
-    chmod +x /usr/local/sbin/reboot; \
-    ln -snf /usr/share/zoneinfo/$TZ /etc/localtime; \
-    echo $TZ > /etc/timezone
+# 1. 原作者的基础环境 + SSH
+RUN export DEBIAN_FRONTEND=noninteractive && \
+    apt-get update && \
     apt-get install -y \
-    python3-pip \
-    python3-venv \
-    wget \
-    curl \
-    gnupg \
-    ca-certificates \
-    fonts-liberation \
-    libasound2 \
-    libatk-bridge2.0-0 \
-    libatk1.0-0 \
-    libatspi2.0-0 \
-    libcups2 \
-    libdbus-1-3 \
-    libdrm2 \
-    libgbm1 \
-    libgtk-3-0 \
-    libnspr4 \
-    libnss3 \
-    libwayland-client0 \
-    libxcomposite1 \
-    libxdamage1 \
-    libxfixes3 \
-    libxkbcommon0 \
-    libxrandr2 \
-    xdg-utils \
-    libu2f-udev \
-    libvulkan1
-    apt-get install -y google-chrome-stable
-    python3 -m pip install --upgrade pip
+        tzdata \
+        openssh-server \
+        sudo \
+        curl \
+        ca-certificates \
+        wget \
+        vim \
+        net-tools \
+        supervisor \
+        cron \
+        unzip \
+        iputils-ping \
+        telnet \
+        git \
+        iproute2 \
+        --no-install-recommends && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* && \
+    mkdir /var/run/sshd && \
+    chmod +x /entrypoint.sh && \
+    chmod +x /usr/local/sbin/reboot && \
+    ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && \
+    echo $TZ > /etc/timezone
+
+# 2. Playwright 和 Chrome 运行需要的系统库 + Python
+RUN export DEBIAN_FRONTEND=noninteractive && \
+    apt-get update && \
+    apt-get install -y \
+        python3 \
+        python3-pip \
+        python3-venv \
+        gnupg \
+        fonts-liberation \
+        libasound2 \
+        libatk-bridge2.0-0 \
+        libatk1.0-0 \
+        libatspi2.0-0 \
+        libcups2 \
+        libdbus-1-3 \
+        libdrm2 \
+        libgbm1 \
+        libgtk-3-0 \
+        libnspr4 \
+        libnss3 \
+        libwayland-client0 \
+        libxcomposite1 \
+        libxdamage1 \
+        libxfixes3 \
+        libxkbcommon0 \
+        libxrandr2 \
+        xdg-utils \
+        libu2f-udev \
+        libvulkan1 \
+        --no-install-recommends && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# 3. 添加 Google Chrome 源并安装 Chrome
+RUN mkdir -p /usr/share/keyrings && \
+    wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | gpg --dearmor -o /usr/share/keyrings/googlechrome-linux-keyring.gpg && \
+    echo "deb [arch=amd64 signed-by=/usr/share/keyrings/googlechrome-linux-keyring.gpg] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list && \
+    apt-get update && \
+    apt-get install -y --no-install-recommends google-chrome-stable && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# 4. 安装 Playwright 及其浏览器（Chromium + 依赖）
+RUN python3 -m pip install --upgrade pip && \
+    python3 -m pip install playwright && \
     python3 -m playwright install --with-deps chromium
 
 EXPOSE 22
