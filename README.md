@@ -1,4 +1,4 @@
-Claw cloud 容器改造 VPS, 实现 SSH 远程登录
+Claw cloud 容器改造 VPS, 实现 SSH 远程登录，国内可用自动Github登录保活Claw cloud，邮箱通知，不依赖国外的telegram保活 (需安装保活程序)
 # Ubuntu  
 
 This project provides a custom Docker image based on Ubuntu, designed to simulate a minimal VPS environment. It includes an SSH server enabled by default, allowing users to interact with the container just like a typical remote server. This setup is ideal for testing, development, or training purposes where a lightweight and easily reproducible virtual server is needed.
