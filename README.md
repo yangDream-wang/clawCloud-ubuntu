@@ -29,19 +29,23 @@ https://console.run.claw.cloud/signin?link=TSWVWVN3G294
 容器内部端口需要映射到外部，才可以访问
 家目录初始化
 1、权限设置
-
+```bash
 ls -l /home
 sudo chown -R $USER:$USER /home/$USER
+```
+
+2、终端字体颜色美化、ls -l 命令别名设置等
+```bash
+curl -sk -o ~/.bashrc https://raw.githubusercontent.com/vevc/ubuntu/refs/heads/main/.bashrc
+curl -sk -o ~/.profile https://raw.githubusercontent.com/vevc/ubuntu/refs/heads/main/.profile
+```
+3.开启cron配置
+```bash
 sudo sudo service cron start
 
-```bash
 * * * * * cd /home/wyy && NODE_OPTIONS="--no-deprecation" /usr/bin/python3 /home/wyy/takeover_browser.py >> /home/wyy/run.log 2>&1
 0 9 * * 1-5 cd /home/wyy && sleep $(($(od -An -N2 -i /dev/urandom) % 28800)) && NODE_OPTIONS="--no-deprecation" /usr/bin/python3 /home/wyy/takeover_browser.py >> /home/wyy/run.log 2>&1
 ```
-2、终端字体颜色美化、ls -l 命令别名设置等
-
-curl -sk -o ~/.bashrc https://raw.githubusercontent.com/vevc/ubuntu/refs/heads/main/.bashrc
-curl -sk -o ~/.profile https://raw.githubusercontent.com/vevc/ubuntu/refs/heads/main/.profile
 注意事项
 需要长期保存的数据，请一定存放在用户家目录，重要数据定期备份
 通过 apt install 安装的应用重启后会丢失（需要在构建镜像时安装）
