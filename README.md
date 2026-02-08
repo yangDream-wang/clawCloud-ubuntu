@@ -32,6 +32,8 @@ https://console.run.claw.cloud/signin?link=TSWVWVN3G294
 ```bash
 ls -l /home
 sudo chown -R $USER:$USER /home/$USER
+//暂时需要手动开启
+cd /home/wyy/uptime-kuma/ && pm2 start server/server.js --name uptime-kuma
 ```
 
 2、终端字体颜色美化、ls -l 命令别名设置等
