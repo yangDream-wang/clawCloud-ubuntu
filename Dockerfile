@@ -25,6 +25,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
         supervisor \
         cron \
         unzip \
+        zip \
         iputils-ping \
         telnet \
         git \
