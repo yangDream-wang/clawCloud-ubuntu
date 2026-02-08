@@ -95,6 +95,8 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
     git clone https://github.com/louislam/uptime-kuma.git /opt/uptime-kuma && \
     cd /opt/uptime-kuma && \
     npm ci --production && \
+    npm install && \
+    npm run build && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
