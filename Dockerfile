@@ -29,6 +29,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
         telnet \
         git \
         iproute2 \
+        nginx \
         --no-install-recommends && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
