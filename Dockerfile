@@ -86,7 +86,18 @@ RUN python3 -m pip install --upgrade pip && \
     python3 -m pip install playwright && \
     python3 -m playwright install --with-deps chromium
 
-EXPOSE 22
+# 5. 安装 Node.js 和 uptime-kuma
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
+    apt-get install -y nodejs && \
+    npm install -g npm@latest && \
+    npm install -g pm2 && \
+    git clone https://github.com/louislam/uptime-kuma.git /opt/uptime-kuma && \
+    cd /opt/uptime-kuma && \
+    npm ci --production && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+EXPOSE 22 3001
 
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["/usr/sbin/sshd", "-D"]
