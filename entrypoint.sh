@@ -9,6 +9,7 @@ cp -r /tmp/uptime-kuma /home/$SSH_USER/uptime-kuma
 echo "0 9 * * * cd /home/wyy/clawcloud-autologin/ && NODE_OPTIONS=\"--no-deprecation\" /usr/bin/python3 /home/wyy/clawcloud-autologin/takeover_browser.py --sleep >> /home/wyy/clawcloud-autologin/run.log 2>&1" | crontab -u $SSH_USER -
 service cron start
 service nginx start
+/usr/local/x-ui/x-ui &
 if [ -n "$START_CMD" ]; then
     set -- $START_CMD
 fi
