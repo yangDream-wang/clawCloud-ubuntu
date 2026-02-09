@@ -101,7 +101,14 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-EXPOSE 22 3001
+# 6. 安装 3x-ui
+RUN mkdir -p /usr/local/x-ui && \
+    wget -O /tmp/x-ui.tar.gz https://github.com/mhsanaei/3x-ui/releases/latest/download/x-ui-linux-amd64.tar.gz && \
+    tar -xzf /tmp/x-ui.tar.gz -C /usr/local/x-ui && \
+    chmod +x /usr/local/x-ui/x-ui && \
+    rm /tmp/x-ui.tar.gz
+
+EXPOSE 22 3001 54321
 
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["/usr/sbin/sshd", "-D"]
