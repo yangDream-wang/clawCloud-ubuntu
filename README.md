@@ -1,4 +1,4 @@
-Claw cloud 容器改造 VPS, 实现 SSH 远程登录，国内可用自动Github登录保活Claw cloud，邮箱通知，不依赖国外的telegram保活 (需安装保活程序，邮箱申请：wyy7293@126.com)
+Claw cloud 容器改造 VPS, 实现 SSH 远程登录，内置3x-ui和uptime-kuma和国内自动Github登录保活Claw cloud，邮箱通知，不依赖国外的telegram保活 (需安装保活程序，邮箱申请：wyy7293@126.com)
 # Ubuntu  
 
 This project provides a custom Docker image based on Ubuntu, designed to simulate a minimal VPS environment. It includes an SSH server enabled by default, allowing users to interact with the container just like a typical remote server. This setup is ideal for testing, development, or training purposes where a lightweight and easily reproducible virtual server is needed.
@@ -13,10 +13,14 @@ docker run -d \
   -e SSH_PASSWORD='ubuntu!23' \
   ghcr.io/yangdream-wang/clawcloud-ubuntu:playwright
 ```
+```bash
+SSH_USER=wyy
+SSH_PASSWORD='ubuntu!23'
+ghcr.io/yangdream-wang/clawcloud-ubuntu:playwright
+```
 
 
-
-本期摘要：Claw cloud | vps | ssh
+本期摘要：Claw cloud | vps | ssh | 3x-ui 
 Claw cloud 注册地址：
 https://console.run.claw.cloud/signin?link=TSWVWVN3G294
 
@@ -32,8 +36,6 @@ https://console.run.claw.cloud/signin?link=TSWVWVN3G294
 ```bash
 ls -l /home
 sudo chown -R $USER:$USER /home/$USER
-//暂时需要手动开启
-cd /home/wyy/uptime-kuma/ && pm2 start server/server.js --name uptime-kuma
 ```
 
 2、终端字体颜色美化、ls -l 命令别名设置等
@@ -44,9 +46,7 @@ curl -sk -o ~/.profile https://raw.githubusercontent.com/vevc/ubuntu/refs/heads/
 3.开启cron配置
 ```bash
 sudo sudo service cron start
-
-* * * * * cd /home/wyy && NODE_OPTIONS="--no-deprecation" /usr/bin/python3 /home/wyy/takeover_browser.py >> /home/wyy/run.log 2>&1
-0 9 * * 1-5 cd /home/wyy && sleep $(($(od -An -N2 -i /dev/urandom) % 28800)) && NODE_OPTIONS="--no-deprecation" /usr/bin/python3 /home/wyy/takeover_browser.py >> /home/wyy/run.log 2>&1
+0 9 * * * cd /home/wyy && sleep $(($(od -An -N2 -i /dev/urandom) % 28800)) && NODE_OPTIONS="--no-deprecation" /usr/bin/python3 /home/wyy/takeover_browser.py >> /home/wyy/run.log 2>&1
 ```
 注意事项
 需要长期保存的数据，请一定存放在用户家目录，重要数据定期备份
