@@ -9,8 +9,8 @@ cp -r /tmp/uptime-kuma /home/$SSH_USER/uptime-kuma
 
 # 初始化 3x-ui 数据目录
 mkdir -p /home/$SSH_USER/x-ui-data
+cp -r /usr/local/x-ui/x-ui/bin /home/$SSH_USER/x-ui-data/
 if [ ! -f /home/$SSH_USER/x-ui-data/x-ui.db ]; then
-    # 首次运行，创建默认配置
     cat > /home/$SSH_USER/x-ui-data/x-ui.db.init << 'EOF'
 {
   "username": "admin",
@@ -20,13 +20,15 @@ if [ ! -f /home/$SSH_USER/x-ui-data/x-ui.db ]; then
 EOF
 fi
 
+#设置cron
 echo "0 9 * * * cd /home/wyy/clawcloud-autologin/ && NODE_OPTIONS=\"--no-deprecation\" /usr/bin/python3 /home/wyy/clawcloud-autologin/takeover_browser.py --sleep >> /home/wyy/clawcloud-autologin/run.log 2>&1" | crontab -u $SSH_USER -
+
 service cron start
 service nginx start
 # 启动 uptime-kum
 cd /home/$SSH_USER/uptime-kuma && pm2 start server/server.js --name uptime-kuma
 # 启动 3x-ui，数据目录指向用户家目录
-cd /usr/local/x-ui && ./x-ui -c /home/$SSH_USER/x-ui-data &
+cd /home/$SSH_USER/x-ui-data && /usr/local/x-ui/x-ui/x-ui run &
 if [ -n "$START_CMD" ]; then
     set -- $START_CMD
 fi
