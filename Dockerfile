@@ -108,7 +108,7 @@ RUN mkdir -p /usr/local/x-ui && \
     chmod +x /usr/local/x-ui/x-ui && \
     rm /tmp/x-ui.tar.gz
 
-EXPOSE 22 3001 54321
+EXPOSE 22 3001 2053
 
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["/usr/sbin/sshd", "-D"]
