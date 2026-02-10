@@ -21,7 +21,7 @@ EOF
 fi
 
 #设置cron
-echo "0 9 * * * cd /home/wyy/clawcloud-autologin/ && NODE_OPTIONS=\"--no-deprecation\" /usr/bin/python3 /home/wyy/clawcloud-autologin/takeover_browser.py --sleep >> /home/wyy/clawcloud-autologin/run.log 2>&1" | crontab -u $SSH_USER -
+echo "0 9 * * * cd /home/$SSH_USER/clawcloud-autologin/ && NODE_OPTIONS=\"--no-deprecation\" /usr/bin/python3 /home/$SSH_USER/clawcloud-autologin/takeover_browser.py --sleep >> /home/$SSH_USER/clawcloud-autologin/run.log 2>&1" | crontab -u $SSH_USER -
 
 service cron start
 service nginx start
